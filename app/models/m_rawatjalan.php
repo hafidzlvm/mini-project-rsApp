@@ -59,5 +59,31 @@ class m_rawatjalan {
         $this->db->execute();
         return $this->db->rowCount();
     }
+
+    // Live Search
+    public function search($data){
+        // var_dump($data);die;
+        $keyword = $data;
+        // $keyword1 = $this->utility->checkInput($data['keyword1']);
+        // $keyword2 = $this->utility->checkInput($data['keyword2']);
+        // $keyword3 = $this->utility->checkInput($data['keyword3']);
+        ################################
+        // $query = "SELECT * FROM $this->table 
+        //     WHERE `pasien` LIKE '%$keyword2%' 
+        //     OR `no_bpjs` LIKE '%$keyword2%' 
+        //     OR `poli` LIKE '%$keyword2%' 
+        //     OR `dokter` LIKE '%$keyword2%'
+        //     OR `tgl-konsul` LIKE '%$keyword1%'";
+        $query = "SELECT * FROM $this->table 
+        WHERE `pasien` LIKE '%$keyword%'";
+        // OR `no_bpjs` LIKE '%$keyword%' 
+        // OR `poli` LIKE '%$keyword%' 
+        // OR `dokter` LIKE '%$keyword%'";
+        // OR `tgl-konsul` LIKE '%$keyword%'";
+        ################################
+        $this->db->query($query);
+        $this->db->execute();
+        return $this->db->fetchAll();
+    }
 }
 ?>

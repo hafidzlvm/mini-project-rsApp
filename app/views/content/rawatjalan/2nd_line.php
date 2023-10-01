@@ -1,22 +1,19 @@
-<!-- Tipe Pembayaran -->
-<div class="modal fade" id="tPembayaran" tabindex="-1" data-bs-keyboard="false" role="dialog"
-    aria-labelledby="modalTitleId" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-sm" role="document">
+<div class="modal fade" id="panduan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalTitleId">Modal title</h5>
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Panduan</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+
             <div class="modal-body">
-                Body
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save</button>
+                Contoh panduan
             </div>
         </div>
     </div>
 </div>
+
+
 
 <!-- Modal Reservasi -->
 <form action="" method="post">
@@ -32,8 +29,7 @@
 
                     <div class="mb-3">
                         <label class="form-label" for="nama">Nama</label>
-                        <input name="nm_pasien" class="form-control" id="nama" type="text" placeholder="Nama"
-                            required>
+                        <input name="nm_pasien" class="form-control" id="nama" type="text" placeholder="Nama" required>
                         <div class="invalid-feedback" data-sb-feedback="nama:required">Nama is required.</div>
                     </div>
                     <div>

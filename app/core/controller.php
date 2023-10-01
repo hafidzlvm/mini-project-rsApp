@@ -2,7 +2,7 @@
 namespace App\core;
 class controller
 {
-    public function view($path, $data = [])
+    public function view($path, $data = [], $data2 = [])
     {
         require_once '../app/views/' . $path . '.php';
     }

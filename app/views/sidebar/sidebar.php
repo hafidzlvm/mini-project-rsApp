@@ -29,7 +29,7 @@
                 </a>
                 <ul class="collapse nav flex-column col-12" id="rawatJalan" data-bs-parent="#menu">
                     <li class="w-100 offset-3">
-                        <a href="home" class="nav-link px-0 ms-1 text-dark"> <span class="d-none d-sm-inline">Semua
+                        <a href="rawatjalan" class="nav-link px-0 ms-1 text-dark"> <span class="d-none d-sm-inline">Semua
                                 Status</span></a>
                     </li>
                     <li class="w-100 offset-3">
