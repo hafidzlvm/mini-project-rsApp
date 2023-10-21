@@ -1,7 +1,7 @@
 </div>
 </div>
 
-<script src="assets/js/bootstrap.bundle.min.js"></script>
+<script src="public/assets/js/bootstrap.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var alert = document.getElementById('alert');
@@ -17,6 +17,7 @@
         }, 3000); // 3000 milidetik (3 detik), sesuaikan dengan kebutuhan Anda
     });
 </script>
+
 </body>
 
 </html>

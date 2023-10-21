@@ -1,15 +1,19 @@
-<?php 
+<?php
 use App\core\database;
 use App\core\utility;
-class m_rawatjalan {
+
+class m_rawatjalan
+{
     private $table = 'rawat_jalan';
     private $db;
     private $utility;
-    public function __construct(){
+    public function __construct()
+    {
         $this->db = new database;
         $this->utility = new utility;
     }
-    public function index($obj){
+    public function index($obj)
+    {
         $tanggal_kunjungan = date("Y\-m\-j");
         $query = "SELECT $obj FROM $this->table WHERE '$tanggal_kunjungan' = '$tanggal_kunjungan'";
         $this->db->query($query);
@@ -17,18 +21,19 @@ class m_rawatjalan {
         return $this->db->fetchAll();
         // harus di execute dulu baru fetchALL;
     }
-    public function addReservasi($data){
+    public function addReservasi($data)
+    {
         $tgl_konsul = date("Y\-m\-j");
         ################################
         $waktu_konsul1 = date("h:i");
-        $waktu_konsul2 = explode(":",date("H:i"));
-        $waktu_konsul2 = $waktu_konsul2[0]+"1".":".$waktu_konsul2[1];
+        $waktu_konsul2 = explode(":", date("H:i"));
+        $waktu_konsul2 = $waktu_konsul2[0] + "1" . ":" . $waktu_konsul2[1];
         ################################
         $waktu_status = date("Y\-m\-j h:i");
         ################################
         $nama = $this->utility->checkInput($data['nm_pasien']);
         $bpjs = $this->utility->checkInput($data['no_bpjs']);
-        $poli =  $this->utility->checkInput($data['poli']);
+        $poli = $this->utility->checkInput($data['poli']);
         $dokter = $this->utility->checkInput($data['dokter']);
         ################################
         $query = "INSERT INTO $this->table (`tgl_konsul`,`waktu_konsul1`, `waktu_konsul2`, `pasien`, `no_bpjs`, `poli`, `dokter`, `status`, `waktu_status`) VALUES (:tgl_konsul, :waktu_konsul1, :waktu_konsul2, :nama, :bpjs, :poli, :dokter, 'registrasi', :waktu);";
@@ -45,7 +50,8 @@ class m_rawatjalan {
         $this->db->execute();
         return $this->db->rowCount();
     }
-    public function update($data){
+    public function update($data)
+    {
         $status = $this->utility->checkInput($data["status"]);
         $id = $this->utility->checkInput($data["id"]);
         $waktu_status = date("Y\-m\-j h:i");
@@ -61,29 +67,114 @@ class m_rawatjalan {
     }
 
     // Live Search
-    public function search($data){
-        // var_dump($data);die;
-        $keyword = $data;
-        // $keyword1 = $this->utility->checkInput($data['keyword1']);
-        // $keyword2 = $this->utility->checkInput($data['keyword2']);
-        // $keyword3 = $this->utility->checkInput($data['keyword3']);
-        ################################
-        // $query = "SELECT * FROM $this->table 
-        //     WHERE `pasien` LIKE '%$keyword2%' 
-        //     OR `no_bpjs` LIKE '%$keyword2%' 
-        //     OR `poli` LIKE '%$keyword2%' 
-        //     OR `dokter` LIKE '%$keyword2%'
-        //     OR `tgl-konsul` LIKE '%$keyword1%'";
-        $query = "SELECT * FROM $this->table 
-        WHERE `pasien` LIKE '%$keyword%'";
-        // OR `no_bpjs` LIKE '%$keyword%' 
-        // OR `poli` LIKE '%$keyword%' 
-        // OR `dokter` LIKE '%$keyword%'";
-        // OR `tgl-konsul` LIKE '%$keyword%'";
+    public function searchTgl($data)
+    {
+        $searchOne = $data['searchOne'];
+        $query = "SELECT * FROM " . $this->table . " WHERE 
+                    `tgl_konsul`
+                  LIKE 
+                    :tgl";
         ################################
         $this->db->query($query);
+        $this->db->bind(':tgl', "%$searchOne%");
         $this->db->execute();
         return $this->db->fetchAll();
     }
+    public function searchName($data)
+    {
+        $searchTwo = $data['searchTwo'];
+        $query = "SELECT * FROM " . $this->table . " WHERE 
+                    `pasien`,
+                    `dokter`,
+                    `poli`
+                  LIKE 
+                    :pasien,
+                    :dokter,
+                    :kd_poli";
+        ################################
+        $this->db->query($query);
+        $this->db->bind(':pasien', "%$searchTwo%");
+        $this->db->bind(':dokter', "%$searchTwo%");
+        $this->db->bind(':kd_poli', "%$searchTwo%");
+        $this->db->execute();
+        return $this->db->fetchAll();
+    }
+    public function searchNo($data)
+    {
+        $searchThree = $data['searchThree'];
+        $query = "SELECT * FROM " . $this->table . " WHERE 
+                    `no_bpjs`
+                  LIKE 
+                    :no_bpjs";
+        ################################
+        $this->db->query($query);
+        $this->db->bind(':no_bpjs', "%$searchThree%");
+        $this->db->execute();
+        return $this->db->fetchAll();
+    }
+    public function search($searchOne, $searchTwo, $searchThree)
+    {
+        $query = "SELECT * FROM " . $this->table . " WHERE ";
+
+        // Menambahkan klausa LIKE berdasarkan input yang diberikan
+        $query1 = "`tgl_konsul` LIKE :tgl ";
+        $query2 = "`pasien` LIKE :searchTwo1 OR `dokter` LIKE :searchTwo2 OR `poli` LIKE :searchTwo3 ";
+        $query3 = "`no_bpjs` LIKE :no_bpjs ";
+        if (isset($searchOne)) {
+            $query .= " $query1";
+            if (isset($searchOne) && isset($searchTwo) || isset($searchThree)){
+                $query .= " AND ";
+                $queryOne = $query;
+            }           
+        } 
+        if (isset($searchTwo) || isset($searchThree)){
+            if (isset($searchTwo) && isset($searchOne)){
+                $query .= " $query2";
+                if (isset($searchThree)){
+                    $query .= " AND ";
+                    $query .= " $query3";
+                }
+            }
+            if (isset($searchTwo) && !isset($searchOne) && !isset($searchThree)){
+                $query .= " $query2";
+            }
+            if (isset($searchThree) && isset($searchOne)){
+                $queryOne .= " $query3";
+                $query = $queryOne;
+                if (isset($searchTwo)){
+                    $query .= " AND ";
+                    $query .= " $query2";
+                }
+            }
+            if (isset($searchThree) && !isset($searchOne)){
+                $query .= " $query3";
+                if (isset($searchTwo)){
+                    $query .= " AND ";
+                    $query .= " $query2";
+                }
+            }
+        }
+        
+
+        // var_dump($query);
+        $this->db->query($query);
+        if (!is_null($searchOne)) {
+            $this->db->bind(':tgl', "%$searchOne%");
+        }
+
+        if (!is_null($searchTwo)) {
+            $this->db->bind(':searchTwo1', "%$searchTwo%");
+            $this->db->bind(':searchTwo2', "%$searchTwo%");
+            $this->db->bind(':searchTwo3', "%$searchTwo%");
+        }
+
+        if (!is_null($searchThree)) {
+                $this->db->bind(':no_bpjs', "%$searchThree%");
+        }
+
+        $this->db->execute();
+        return $this->db->fetchAll();
+    }
+
 }
 ?>

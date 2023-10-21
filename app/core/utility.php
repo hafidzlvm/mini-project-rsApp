@@ -1,6 +1,7 @@
 <?php
 namespace App\core;
-use App\config\Config;
+
+use App\core\controller;
 
 class utility
 {
