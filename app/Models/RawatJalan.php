@@ -9,7 +9,7 @@ class RawatJalan extends Model
 {
     use HasFactory;
     protected $table = 'rawat_jalan';
-    protected $id = 'id_rawat_jalan';
+    protected $primaryKey = 'id_rawat_jalan';
     protected $guarded = [];
     protected $attributes = [
         'status' => '-'

@@ -97,14 +97,16 @@
                 </select>
             </div>
             <div class="col-3">
-                <select class="form-select shadow-sm text-start col-12" aria-label="Default select example" name="poli" required>
+                <select class="form-select shadow-sm text-start col-12" aria-label="Default select example" name="poli"
+                    required>
                     <option selected value="">Poliklinik</option>
                     <option value="p_gigi">Poli Gigi</option>
                     <option value="p_umum">Poli Umum</option>
                 </select>
             </div>
             <div class="col-3">
-                <select class="form-select shadow-sm text-start col-12" aria-label="Default select example" name="dokter" required>
+                <select class="form-select shadow-sm text-start col-12" aria-label="Default select example" name="dokter"
+                    required>
                     <option selected value="">Dokter</option>
                     <option value="VaniaUtami">Dr. Vania Utami</option>
                     <option value="Pitoyo">Dr. Pitoyo</option>
@@ -165,6 +167,7 @@
                                 <th scope="col">Poli</th>
                                 <th scope="col">Dokter</th>
                                 <th scope="col">Status</th>
+                                <th class="col-1">Aksi</th>
                             </tr>
                         </thead>
                         @if ($data == null)
@@ -187,7 +190,7 @@
                                                 {{ $a['waktu_konsul2'] }}
                                             </span>
                                         </td>
-                                        <td class="col-1" id="Antrian">
+                                        <td class="col-1">
                                             {{ $loop->iteration }}
                                         </td>
                                         <td class="col-2 text-start ps-5" id="Pasien">
@@ -216,8 +219,10 @@
                                             {{-- {{ Str::ucfirst($a['dokter']) }} --}}
                                         </td>
                                         <td class="col-1" id="Status">
-                                            <form class="m-2" action="/rawat-jalan/update/{{ $a['id_rawat_jalan'] }}" method="post">
+                                            <form class="m-2" action="/rawat-jalan/update-status/{{ $a['id_rawat_jalan'] }}"
+                                                method="post">
                                                 @csrf
+                                                @method('put')
                                                 <input name="id" class="btn btn-primary" type="hidden"
                                                     value="{{ $a['id'] }}">
                                                 @if ($a['status'] == 'registrasi')
@@ -268,6 +273,24 @@
                                                 {{ $a['waktu_status'] }}
                                             </span>
                                         </td>
+                                        <td>
+                                            <div class="dropdown">
+                                                <button class="btn" type="button" data-bs-toggle="dropdown"
+                                                    aria-expanded="false">
+                                                    <span class='fa fa-ellipsis-v'></span>
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <li>
+                                                        {{-- <a class="dropdown-item" href="#">Update</a> --}}
+                                                        <a class="btn" onclick="addRow(this)" class="btn dropdown-item" data-id='{{ $a['id_rawat_jalan'] }}' data-antrian='{{ $loop->iteration }}'
+                                                            data-bs-toggle="modal" data-bs-target="#modalUpdate">
+                                                            Update
+                                                        </a>
+                                                    </li>
+                                                    <li><a href="{{ route('rawat-jalan.delete', $a['id_rawat_jalan'])}}" class="dropdown-item">Delete</a></li>
+                                                </ul>
+                                            </div>
+                                        </td>
 
                                     </tr>
                                 </tbody>
@@ -283,6 +306,50 @@
     <div class="row">
         <div class="col-12 py-2">
 
+        </div>
+    </div>
+    {{-- modal --}}
+    <div class="result">
+        <div class="modal fade" id="modalUpdate" tabindex="-1" aria-labelledby="modalUpdateLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="modalUpdateLabel">Edit Data No. <span id='antrian' data-foo=''></span>
+                        </h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="" method="post" id='ajax-form'>
+                        @csrf
+                        @method('put')
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="pasien" class="form-label">Nama</label>
+                                <input type="text" name="pasien" class="form-control" required placeholder="" value="" id="pasien">
+                            </div>
+                            <div class="mb-3">
+                                <label for="no_bpjs" class="form-label">No BPJS</label>
+                                <input type="number" name="no_bpjs" class="form-control" required placeholder="" value="" id="no_bpjs">
+                            </div>
+                            <div class="mb-3">
+                                <select class="form-select" name="dokter" required value="" id="dokter">
+                                    <option value="vaniautami">dr. Vania Utami</option>
+                                    <option value="pitoyo">dr. Pitoyo</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <select class="form-select" name="poli" required value="" id="poli">
+                                    <option value="p_umum">Poli Umum</option>
+                                    <option value="p_gigi">Poli Gigi</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 

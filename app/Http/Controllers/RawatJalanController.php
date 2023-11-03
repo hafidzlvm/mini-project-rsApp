@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\RawatJalan;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class RawatJalanController extends Controller
@@ -57,26 +58,40 @@ class RawatJalanController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(RawatJalan $rawatJalan)
+    public function edit(RawatJalan $id, $antrian)
     {
-        //
+        $data_edit = RawatJalan::findOrFail($id);
+        return ([
+            $data_edit,
+            $antrian
+        ]);
+    }
+    public function updateData(Request $request, $id){
+        $data = RawatJalan::find($id);
+        $data->pasien = $request->pasien;
+        $data->no_bpjs = $request->no_bpjs;
+        $data->dokter = $request->dokter;
+        $data->poli = $request->poli;
+        $data->save();
+        return redirect()->route('rawat-jalan.index');
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, RawatJalan $id)
+    public function updateStatus(Request $request, RawatJalan $id)
     {
-        $newStatus = $request->input('status');
-
+        
         $data = new RawatJalan;
         $data = RawatJalan::find($id->id_rawat_jalan);
         if (!$data) {
             // Data tidak ditemukan
             return redirect()->route('rawat-jalan.index');
         }
-
+        
+        $newStatus = $request->input('status');
         $data->status = $newStatus;
+        $data->waktu_status = Carbon::now();
         $data->save();
 
         return redirect()->route('rawat-jalan.index');
@@ -85,8 +100,9 @@ class RawatJalanController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(RawatJalan $rawatJalan)
+    public function destroy(RawatJalan $id)
     {
-        //
+        $id->delete();
+        return redirect()->route('rawat-jalan.index');
     }
 }

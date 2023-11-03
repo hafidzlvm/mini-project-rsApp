@@ -22,7 +22,14 @@ Route::prefix('/rawat-jalan')->group(function () {
     Route::get('/', [RawatJalanController::class, 'index'])->name('rawat-jalan.index');
     
     Route::post('/store', [RawatJalanController::class, 'store'])->name('rawat-jalan.store');
-    Route::post('/update/{id}', [RawatJalanController::class, 'update'])->name('rawat-jalan.update');
+
+    Route::put('/update-status/{id}', [RawatJalanController::class, 'updateStatus']);
+
+
+    Route::get('/update/{id}/{antrian}', [RawatJalanController::class, 'edit']);
+    Route::put('/update/{id}', [RawatJalanController::class, 'updateData']);
+
+    Route::get('/delete/{id}', [RawatJalanController::class, 'destroy'])->name('rawat-jalan.delete');
 });
 
 Route::get('/dashboard', function () {
