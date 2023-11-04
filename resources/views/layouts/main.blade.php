@@ -6,56 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@yield('title')</title>
-    {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js">
-    <script>
-        function addRow(ele) {
-            var id = $(ele).attr('data-id');
-            var antrian = $(ele).attr('data-antrian');
-            console.log(antrian);
-            $.ajax({
-                url: 'rawat-jalan/update/' + id + '/' + antrian,
-                type: 'get',
-                data: {
-
-                },
-                success: function(data) {
-                    $('#ajax-form').attr('action', 'rawat-jalan/update/' + id );
-                    $('#modalUpdateLabel #antrian').attr('data-foo', data[1]);
-                    $('#ajax-form #pasien').attr('placeholder', data[0]['pasien']);
-                    $('#ajax-form #no_bpjs').attr('placeholder', data[0]['no_bpjs']);
-                    $('#ajax-form #dokter').attr('placeholder', data[0]['dokter']);
-                    $('#ajax-form #poli').attr('placeholder', data[0]['poli']);
-
-                    $('#ajax-form #pasien').attr('value', data[0]['pasien']);
-                    $('#ajax-form #no_bpjs').attr('value', data[0]['no_bpjs']);
-                    $('#ajax-form #dokter').attr('value', data[0]['dokter']);
-                    $('#ajax-form #poli').attr('value', data[0]['poli']);
-
-                    if (data[0]['poli'] == 'p_umum') {
-                        $('#poli').val('p_umum', function () {
-                            $('#poli').attr('selected');
-                        });
-                    } else {
-                        $('#poli').val('p_gigi');
-                    }
-                    if (data[0]['dokter'] == 'vaniautami') {
-                        $('#dokter').val('vaniautami', function () {
-                            $('#dokter').attr('selected');
-                        })
-                    } else {
-                        $('#dokter').val('pitoyo');
-                    }
-
-                    $('#result').html(data)
-                    console.log(data);
-                }
-            });
-        }
-    </script>
+    <script src='{{asset('build/assets/index.js')}}'></script>
     <style>
         .banner {
             height: 80vh;
@@ -117,6 +73,9 @@
 
         .Biru {
             color: rgb(13, 202, 240);
+        }
+        [data-foo]:after{
+            content: attr(data-foo);
         }
     </style>
 

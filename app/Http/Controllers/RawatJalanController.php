@@ -58,13 +58,10 @@ class RawatJalanController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(RawatJalan $id, $antrian)
+    public function edit($id, $antrian)
     {
         $data_edit = RawatJalan::findOrFail($id);
-        return ([
-            $data_edit,
-            $antrian
-        ]);
+        return response()->json([$data_edit,$antrian]);
     }
     public function updateData(Request $request, $id){
         $data = RawatJalan::find($id);
