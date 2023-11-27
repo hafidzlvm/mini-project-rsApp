@@ -122,39 +122,39 @@ class m_rawatjalan
         $query3 = "`no_bpjs` LIKE :no_bpjs ";
         if (isset($searchOne)) {
             $query .= " $query1";
-            if (isset($searchOne) && isset($searchTwo) || isset($searchThree)){
+            if (isset($searchOne) && isset($searchTwo) || isset($searchThree)) {
                 $query .= " AND ";
                 $queryOne = $query;
-            }           
-        } 
-        if (isset($searchTwo) || isset($searchThree)){
-            if (isset($searchTwo) && isset($searchOne)){
+            }
+        }
+        if (isset($searchTwo) || isset($searchThree)) {
+            if (isset($searchTwo) && isset($searchOne)) {
                 $query .= " $query2";
-                if (isset($searchThree)){
+                if (isset($searchThree)) {
                     $query .= " AND ";
                     $query .= " $query3";
                 }
             }
-            if (isset($searchTwo) && !isset($searchOne) && !isset($searchThree)){
+            if (isset($searchTwo) && !isset($searchOne) && !isset($searchThree)) {
                 $query .= " $query2";
             }
-            if (isset($searchThree) && isset($searchOne)){
+            if (isset($searchThree) && isset($searchOne)) {
                 $queryOne .= " $query3";
                 $query = $queryOne;
-                if (isset($searchTwo)){
+                if (isset($searchTwo)) {
                     $query .= " AND ";
                     $query .= " $query2";
                 }
             }
-            if (isset($searchThree) && !isset($searchOne)){
+            if (isset($searchThree) && !isset($searchOne)) {
                 $query .= " $query3";
-                if (isset($searchTwo)){
+                if (isset($searchTwo)) {
                     $query .= " AND ";
                     $query .= " $query2";
                 }
             }
         }
-        
+
 
         // var_dump($query);
         $this->db->query($query);
@@ -169,7 +169,7 @@ class m_rawatjalan
         }
 
         if (!is_null($searchThree)) {
-                $this->db->bind(':no_bpjs', "%$searchThree%");
+            $this->db->bind(':no_bpjs', "%$searchThree%");
         }
 
         $this->db->execute();
